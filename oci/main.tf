@@ -9,7 +9,7 @@ module "create_compartment" {
 
   compartment-et        = local.execution_target
   compartment-et_map    = var.et
-  compartment-instance_map = var.instance
+  compartment-instance_map = var.instance[local.execution_target]
   compartment-region_map = var.region
 }
 
