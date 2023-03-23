@@ -10,6 +10,12 @@
 #   sensitive           = false
 # }
 
+output  "create_compartment-id" {
+  description         = ""
+  value               = module.create_compartment.id
+  sensitive           = false
+}
+
 output  "list_compartment-object" {
   description         = ""
   value               = module.list_compartment.object

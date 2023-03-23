@@ -30,11 +30,10 @@ variable "instance" {
             byoipv6range_id = null
             ipv6cidr_block  = null
           }
-          cidr_block    = ""
+          cidr_block    = "10.0.1.0/24"
           cidr_blocks   = []
           #defined_tags  = {}                                                                       #enabling this will overwrite OCI auto create tags
-          dns_label     = ""
-          enable        = true
+          dns_label     = "test.local"
           freeform_tags = []
           ipv6private_cidr_blocks = []
           is_ipv6enabled  = false
@@ -64,6 +63,20 @@ variable "instance" {
           }
         }
         name            = "idp"
+        vcn             = {
+          byoipv6cidr_details = {
+            byoipv6range_id = null
+            ipv6cidr_block  = null
+          }
+          cidr_block    = "10.0.2.0/24"
+          cidr_blocks   = []
+          #defined_tags  = {}                                                                       #enabling this will overwrite OCI auto create tags
+          dns_label     = "test.local"
+          freeform_tags = []
+          ipv6private_cidr_blocks = []
+          is_ipv6enabled  = false
+          is_oracle_gua_allocation_enabled = false
+        }
       }        
       #name              = "chrismurray092776"
     }
@@ -77,7 +90,7 @@ variable "instance" {
         compute         = true
         count           = 2
         display_name    = "Apex"
-        enable          = true
+        enable          = false
         image           = 20210610
         shape           = "VM.Standard2.4"
         lb              = {
@@ -91,6 +104,20 @@ variable "instance" {
           }
         }
         name            = "apex"
+        vcn             = {
+          byoipv6cidr_details = {
+            byoipv6range_id = null
+            ipv6cidr_block  = null
+          }
+          cidr_block    = "10.0.1.0/24"
+          cidr_blocks   = []
+          #defined_tags  = {}                                                                       #enabling this will overwrite OCI auto create tags
+          dns_label     = "test.local"
+          freeform_tags = []
+          ipv6private_cidr_blocks = []
+          is_ipv6enabled  = false
+          is_oracle_gua_allocation_enabled = false
+        }
       }
       idp               = {
         compartment     = {
@@ -115,6 +142,20 @@ variable "instance" {
           }
         }
         name            = "idp"
+        vcn             = {
+          byoipv6cidr_details = {
+            byoipv6range_id = null
+            ipv6cidr_block  = null
+          }
+          cidr_block    = "10.0.2.0/24"
+          cidr_blocks   = []
+          #defined_tags  = {}                                                                       #enabling this will overwrite OCI auto create tags
+          dns_label     = "test.local"
+          freeform_tags = []
+          ipv6private_cidr_blocks = []
+          is_ipv6enabled  = false
+          is_oracle_gua_allocation_enabled = false
+        }
       }    
       #name              = "chrismurray"
     }
