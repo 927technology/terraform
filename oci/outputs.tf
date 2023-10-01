@@ -1,3 +1,5 @@
+
+
 # output  "list_ad-count" {
 #   description         = ""
 #   value               = module.list_ad.count
@@ -10,17 +12,17 @@
 #   sensitive           = false
 # }
 
-output  "create_compartment-id" {
-  description         = ""
-  value               = module.create_compartment.id
-  sensitive           = false
-}
+# output  "create_compartment-id" {
+#   description         = ""
+#   value               = module.create_compartment.id
+#   sensitive           = false
+# }
 
-output  "list_compartment-object" {
-  description         = ""
-  value               = module.list_compartment.object
-  sensitive           = false
-}
+# output  "list_compartment-object" {
+#   description         = ""
+#   value               = module.list_compartment.object
+#   sensitive           = false
+# }
 
 # output  "list_image-operating_system" {
 #   description         = ""
