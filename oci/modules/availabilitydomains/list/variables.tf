@@ -1,4 +1,4 @@
-variable tenancy_map              {
-  default                         = {}
-  #sensitive                       = false
+variable tenancy_map                {
+  default                           = {}
+  #sensitive                         = false
 }

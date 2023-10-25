@@ -1,14 +1,6 @@
-output after {
-  value                           = null                         
-}
-output  "all" {
-  description         = ""
-  #value               = data.oci_identity_users.list.users
-  
-  value               = ({
-    for label, setting in data.oci_identity_users.list.users : setting.name => setting
+output "map" {
+  value =  ({
+    for label, setting in data.oci_identity_users.list.users : 
+      lookup(setting.freeform_tags, label, setting.name) => setting
   })
-  
-  
-  sensitive           = false
 }

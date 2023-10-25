@@ -1,61 +1,94 @@
+#AVAILABILTY/FAULT DOMAIN######################################################
+
+/*
+output "availabilitydomains_count" {
+  value                           = module.availabilitydomains.count
+}
+
+output "availabilitydomains" {
+  value                           = module.availabilitydomains.list
+}
+
+output "ad_fd-map" {
+  value                           = module.faultdomains.map
+}
 
 
-# output  "list_ad-count" {
-#   description         = ""
-#   value               = module.list_ad.count
-#   sensitive           = false
-# }
+output "ad1_fd1" {
+  value                           = flatten(module.faultdomains.ad_fd[0])[0]
+}
 
-# output  "list_ad-id" {
-#   description         = ""
-#   value               = module.list_ad.id
-#   sensitive           = false
-# }
+output "ad2_fd1" {
+  value                           = flatten(module.faultdomains.ad_fd[1])[0]
+}
+*/
+output "ad_fd-list" {
+  value                           = flatten(module.faultdomains.map[*])
+}
+/*
+output "ad_fd-list_targeted" {
+  value                           = flatten(module.faultdomains.ad_fd[*])[3]
+}
+*/
 
-# output  "create_compartment-id" {
-#   description         = ""
-#   value               = module.create_compartment.id
-#   sensitive           = false
-# }
 
-# output  "list_compartment-object" {
-#   description         = ""
-#   value               = module.list_compartment.object
-#   sensitive           = false
-# }
+#COMPARTMENTS##################################################################
 
-# output  "list_image-operating_system" {
-#   description         = ""
-#   value               = module.list_image.operating_system
-#   sensitive           = false
-# }
+/*
+output "compartments0_initial-list" {
+  depends_on                      = [
+                                      module.compartments_initial-data
+  ]
+  value                           = module.compartments_initial-data.list
+}
 
-# output  "list_image-object" {
-#   description         = ""
-#   value               = module.list_image.object
-#   sensitive           = false
-# }
+output "compartments0_initial-map" {
+  depends_on                      = [
+                                      module.compartments_initial-data
+  ]
+  value                           = module.compartments_initial-data.map
+}
+*/
 
-# output  "list_instance-count" {
-#   description         = ""
-#   value               = module.list_instance.count
-#   sensitive           = false
-# }
+/*
+output "compartments1_parent-map" {
+  depends_on                      = [  
+                                    module.compartments_parent-data
+                                  ]
+  value                           = module.compartments_parent-data.map
+}
+*/
 
-# output  "list_instance-object" {
-#   description         = ""
-#   value               = module.list_instance.object
-#   sensitive           = false
-# }
+/*
+output "compartments2_child-map" {
+  depends_on                      = [  
+                                    module.compartments_child-data
+                                  ]
+  value                           = module.compartments_child-data.map
+}
+*/
 
-# output  "list_shape" {
-#   description         = ""
-#   value               = module.list_shape
-#   sensitive           = false
-# }
+/*
+output "compartments3_gchild-map" {
+  depends_on                      = [  
+                                    module.compartments_gchild-data
+                                  ]
+  value                           = module.compartments_gchild-data.map
+}
+*/
 
-# output  "search_image-windows" {
-#   description         = ""
-#   value               = module.search_image-windows.search
-#   sensitive           = false
-# }
+/*
+output "compartments4_ggchild-map" {
+  depends_on                      = [  
+                                    module.compartments_ggchild-data
+                                  ]
+  value                           = module.compartments_ggchild-data.map
+}
+*/
+
+output "compartments-map"         {
+  depends_on                      = [  
+                                    module.compartments_ggchild-data
+                                  ]
+  value                           = module.compartments_ggchild-data.map
+}

@@ -1,3 +1,3 @@
-output after {
-  value                           = null                         
+output after                        {
+  value                             = null                         
 }

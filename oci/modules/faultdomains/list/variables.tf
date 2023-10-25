@@ -1,5 +1,5 @@
-variable availability_domains     {
-  default                         = null
+variable availabilitydomains    {
+  default                         = []
   description                     = ""
   #sensitive                       = false
 }
