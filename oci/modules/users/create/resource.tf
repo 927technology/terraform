@@ -13,12 +13,7 @@ resource "oci_identity_user" "v0_1_0" {
       )
   }
   
-  compartment_id                  = (
-    each.value.compartment                              == "root"           ? (
-      var.id 
-    ) : (
-      var.compartment_map[each.value.compartment].id
-    ))  
+  compartment_id                  = var.compartment_map[each.value.compartment].id
   defined_tags                    = each.value.tags.defined
   description                     = each.value.description
   email                           = each.value.user.email

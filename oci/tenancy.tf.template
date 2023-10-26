@@ -1,7 +1,7 @@
 variable "tenancy" {
   type                  = map(any)
   default               = {
-    oci                 = {                                                                         #this is your label for your tenancy
+    chmurray            = {                                                                         #this is your label for your tenancy
       user              = {
         name            = "tenancy name"
         id              = "ocid1.user.oc1..blahblah"

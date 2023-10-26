@@ -23,6 +23,19 @@ output  "count" {
   value                             = length(data.oci_identity_fault_domains.list.fault_domains)
 }
 */
+
+
+output  "list" {
+  description                       = ""
+  sensitive                         = false
+  value                             = (flatten([
+    for key in data.oci_identity_fault_domains.list : [
+      key.fault_domains  
+    ]
+  ])[*])
+}
+
+
 output  "map" {
   description                       = ""
   sensitive                         = false

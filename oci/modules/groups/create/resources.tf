@@ -13,9 +13,9 @@ resource "oci_identity_group" "v0_1_0" {
         )
   }
   
-    compartment_id                = var.compartment_map[each.value.compartment].id
-    defined_tags                  = each.value.tags.defined
-    description                   = each.value.description
-    freeform_tags                 = each.value.tags.freeform
-    name                          = each.value.tags.freeform.label
+  compartment_id                = var.compartment_map[each.value.compartment].id
+  defined_tags                  = each.value.tags.defined
+  description                   = each.value.description
+  freeform_tags                 = each.value.tags.freeform
+  name                          = each.value.tags.freeform.label
 }

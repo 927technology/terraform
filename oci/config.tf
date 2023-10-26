@@ -8,7 +8,7 @@ variable "config" {
           compartments              = [
             /*
             {
-              description           = "idcs-2cc6aba2a58c4e7b84b5daca8dc0a045|27484836|cmurray@927.technology-841928"
+              description           = "idcs-"
               enable                = true
               enable_delete         = false
               parent                = "root"
@@ -114,7 +114,6 @@ variable "config" {
               compartment           = "root"
               description           = "first test group"
               enable                = true
-              id                    = "afc9615c-4e7b-4f95-ad77-487a06bf0ffd"
               members               = {
                 groups              = []
                 users               = [
@@ -134,7 +133,6 @@ variable "config" {
               compartment           = "root"
               description           = "second test group"
               enable                = true
-              id                    = "9633927b-8746-4ef1-bdba-f2749c85e7d1"
               tags                  = {
                 defined             = {}
                 freeform            = {
@@ -146,7 +144,6 @@ variable "config" {
               compartment           = "root"
               description           = "all test group"
               enable                = true
-              id                    = "00a4d7fa-83a2-45ce-9a7e-09c799d0c48d"
               tags                  = {
                 defined             = {}
                 freeform            = {
