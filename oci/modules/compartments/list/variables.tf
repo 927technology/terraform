@@ -3,16 +3,29 @@ variable access_level               {
   description                       = "value"
   #sensitive                         = false
 }
+
+variable default_map                {
+  default                           = {}
+  #sensitive                         = false
+}
+
+variable tenancy_map                {
+  default                           = {}
+  #sensitive                         = false
+}
+
 variable id                         {
   default                           = null
   description                       = "value"
   #sensitive                         = false
 }
+
 variable name                       {
   default                           = null
   description                       = "value"
   #sensitive                         = false
 }
+
 variable state                      {
   default                           = "ACTIVE"
   description                       = "value"
@@ -25,10 +38,4 @@ variable state                      {
     DELETING
     DELETED
   */
-}
-
-
-variable default_map                {
-  default                           = {}
-  #sensitive                         = false
 }

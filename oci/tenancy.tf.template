@@ -1,0 +1,32 @@
+variable "tenancy" {
+  type                  = map(any)
+  default               = {
+    oci                 = {                                                                         #this is your label for your tenancy
+      user              = {
+        name            = "tenancy name"
+        id              = "ocid1.user.oc1..blahblah"
+        private_key     = {
+          fingerprint   = "aa:aa:aa:aa:aa:aa:aa:aa:aa:aa:aa:aa:aa:aa:aa:aa"
+          password      = "something secure"
+          path          = "/home/user/.oci/oci_api_key.pem"
+        }
+      }
+      defined_tags      = {}
+      description       = "root compartment (psudo)"
+      enable_delete     = false
+      id                = "ocid1.tenancy.oc1..blahbalah"
+      inactive_state    = ""
+      is_accessible     = false
+      name              = "root"
+      tags              = {
+        defined         = {}
+        freeform        = {
+                           "label": "root"
+        }
+      }
+      region            = "iad"                                                                     #region code iad=ashburn
+      state             = "ACTIVE"
+      time_created      = ""
+    }
+  }
+}

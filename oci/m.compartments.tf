@@ -5,6 +5,7 @@ module "compartments_initial-data"  {
   depends_on                      = []
   id                              = var.tenancy[var.local.execution_target.name].id
   source                          = "./modules/compartments/list"
+  tenancy_map                     = var.tenancy[var.local.execution_target.name]
 }
 
 ## PARENT - CREATE AND REFRESH COMPARTMENT LIST
@@ -18,7 +19,6 @@ module "compartments_parent-create" {
   relationship                    = "parent"
   source                          = "./modules/compartments/create"
   tenancy_map                     = var.tenancy[var.local.execution_target.name]
-
 }
 
 # creates a new map of compartments including those added in module.compartments_create-parent
@@ -29,6 +29,7 @@ module "compartments_parent-data"  {
   ]
   id                              = var.tenancy[var.local.execution_target.name].id
   source                          = "./modules/compartments/list"
+  tenancy_map                     = var.tenancy[var.local.execution_target.name]
 }
 
 ## CHILD - CREATE AND REFRESH COMPARTMENT LIST
@@ -42,7 +43,6 @@ module "compartments_child-create" {
   relationship                    = "child"
   source                          = "./modules/compartments/create"
   tenancy_map                     = var.tenancy[var.local.execution_target.name]
-
 }
 
 # creates a new map of compartments including those added in module.compartments_create-child
@@ -53,6 +53,7 @@ module "compartments_child-data"  {
   ]
   id                              = var.tenancy[var.local.execution_target.name].id
   source                          = "./modules/compartments/list"
+  tenancy_map                     = var.tenancy[var.local.execution_target.name]
 }
 
 ## GCHILD - CREATE AND REFRESH COMPARTMENT LIST
@@ -66,7 +67,6 @@ module "compartments_gchild-create" {
   relationship                    = "gchild"
   source                          = "./modules/compartments/create"
   tenancy_map                     = var.tenancy[var.local.execution_target.name]
-
 }
 
 # creates a new map of compartments including those added in module.compartments_create-child
@@ -77,6 +77,7 @@ module "compartments_gchild-data" {
   ]
   id                              = var.tenancy[var.local.execution_target.name].id
   source                          = "./modules/compartments/list"
+  tenancy_map                     = var.tenancy[var.local.execution_target.name]
 }
 
 ## GGCHILD - CREATE AND REFRESH COMPARTMENT LIST
@@ -100,6 +101,8 @@ module "compartments_ggchild-data"  {
   ]
   id                              = var.tenancy[var.local.execution_target.name].id
   source                          = "./modules/compartments/list"
+  tenancy_map                     = var.tenancy[var.local.execution_target.name]
+
 }
 
 ## FINAL - REFRESH COMPARTMENT LIST
@@ -110,4 +113,6 @@ module "compartments-data"        {
   ]
   id                              = var.tenancy[var.local.execution_target.name].id
   source                          = "./modules/compartments/list"
+  tenancy_map                     = var.tenancy[var.local.execution_target.name]
+
 }

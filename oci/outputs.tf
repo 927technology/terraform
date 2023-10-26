@@ -31,7 +31,6 @@ output "ad_fd-list_targeted" {
 }
 */
 
-
 #COMPARTMENTS##################################################################
 
 /*
@@ -86,13 +85,19 @@ output "compartments4_ggchild-map" {
 }
 */
 
+output "compartments-list"         {
+  depends_on                      = [  
+                                    module.compartments_ggchild-data
+                                  ]
+  value                           = module.compartments_ggchild-data.list
+}
+
 output "compartments-map"         {
   depends_on                      = [  
                                     module.compartments_ggchild-data
                                   ]
   value                           = module.compartments_ggchild-data.map
 }
-
 
 #GROUPS########################################################################
 /*

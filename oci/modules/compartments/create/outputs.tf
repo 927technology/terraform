@@ -1,3 +1,0 @@
-output after                        {
-  value                             = null                         
-}

@@ -15,18 +15,12 @@ resource "oci_identity_compartment" "v0_1_1" {
         )
   }
   
-  compartment_id                  = ( 
-      each.value.heirachy.parent                            == "root"           ? (                 #parent compartments
-        var.tenancy_map.id 
-    ) : (
-        var.compartments_map[each.value.heirachy.parent].id
-    ))
-
-  #defined_tags                    = each.value.compartment.defined_tags
-  description                     = each.value.description
-  enable_delete                   = each.value.enable_delete
-  freeform_tags                   = each.value.tags.freeform
-  name                            = ( 
+  compartment_id                    = var.compartments_map[each.value.heirachy.parent].id
+  #defined_tags                      = each.value.compartment.defined_tags
+  description                       = each.value.description
+  enable_delete                     = each.value.enable_delete
+  freeform_tags                     = each.value.tags.freeform
+  name                              = ( 
                                                                                                     #names with no prefix or suffix
       length(each.value.prefix)                             == 0                && 
       length(each.value.suffix)                             == 0                && 
