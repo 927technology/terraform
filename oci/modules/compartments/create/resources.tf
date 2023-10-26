@@ -30,23 +30,19 @@ resource "oci_identity_compartment" "v0_1_1" {
                                                                                                     #names with no prefix or suffix
       length(each.value.prefix)                             == 0                && 
       length(each.value.suffix)                             == 0                && 
-      length(var.et_map.modules.compartments.prefix)        == 0                &&
-      length(var.et_map.modules.compartments.suffix)        == 0                &&
-      length(var.default_map.modules.compartments.prefix)   == 0                && 
-      length(var.default_map.modules.compartments.suffix)   == 0                ? ( 
+      length(var.default_map["compartments"].prefix)        == 0                && 
+      length(var.default_map["compartments"].suffix)        == 0                ? ( 
         each.value.tags.freeform.label
     ) : (
                                                                                                     #names with compartment prefix and no suffix
       length(each.value.prefix)                             == 1                &&
       length(each.value.suffix)                             == 0                &&
-      length(var.default_map.modules.compartments.suffix)   == 0                && 
-      length(var.et_map.modules.compartments.suffix)        == 0                ? (
+      length(var.default_map["compartments"].suffix)        == 0                ? ( 
         "${each.value.prefix[0]}-${each.value.tags.freeform.label}"
     ) : (
       length(each.value.prefix)                             >= 2                &&
       length(each.value.suffix)                             == 0                &&
-      length(var.default_map.modules.compartments.suffix)   == 0                && 
-      length(var.et_map.modules.compartments.suffix)        == 0                ? (
+      length(var.default_map["compartments"].suffix)        == 0                ? ( 
         "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.tags.freeform.label}"
     ) : (
                                                                                                     #names with compartment prefix and compartment suffix
@@ -58,153 +54,56 @@ resource "oci_identity_compartment" "v0_1_1" {
       length(each.value.suffix)                             >= 1                ? (
         "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.tags.freeform.label}-${each.value.suffix[0]}"
     ) : (
-                                                                                                    #names with compartment prefix and et suffix
-      length(each.value.prefix)                             == 1                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.et_map.modules.compartments.suffix)        >= 1                ? (
-        "${each.value.prefix[0]}-${each.value.tags.freeform.label}-${var.et_map.modules.compartments.suffix[0]}"
-    ) : (
-      length(each.value.prefix)                             >= 2                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.et_map.modules.compartments.suffix)        >= 1                ? (
-        "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.tags.freeform.label}-${var.et_map.modules.compartments.suffix[0]}"
-    ) : (
                                                                                                     #names with compartment prefix and default suffix
       length(each.value.prefix)                             == 1                &&
       length(each.value.suffix)                             == 0                &&
-      length(var.default_map.modules.compartments.suffix)   >= 1                &&
-      length(var.et_map.modules.compartments.suffix)        == 0                ? (
-        "${each.value.prefix[0]}-${each.value.tags.freeform.label}-${var.default_map.modules.compartments.suffix[0]}"
+      length(var.default_map["compartments"].suffix)                >= 1                ? (
+        "${each.value.prefix[0]}-${each.value.tags.freeform.label}-${var.default_map["compartments"].suffix[0]}"
     ) : (
       length(each.value.prefix)                             >= 2                &&
       length(each.value.suffix)                             == 0                &&
-      length(var.default_map.modules.compartments.suffix)   >= 1                &&
-      length(var.et_map.modules.compartments.suffix)        == 0                ? (
-        "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.tags.freeform.label}-${var.default_map.modules.compartments.suffix[0]}"
-    ) : (
-                                                                                                    #names with et prefix and no suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.et_map.modules.compartments.prefix)        == 1                &&
-      length(var.default_map.modules.compartments.suffix)   == 0                && 
-      length(var.et_map.modules.compartments.suffix)        == 0                ? (
-        "${var.et_map.modules.compartments.prefix[0]}-${each.value.tags.freeform.label}"
+      length(var.default_map["compartments"].suffix)        >= 1                ? (
+        "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.tags.freeform.label}-${var.default_map["compartments"].suffix[0]}"
     ) : (
       length(each.value.prefix)                             == 0                && 
       length(each.value.suffix)                             == 0                && 
-      length(var.et_map.modules.compartments.prefix)        >= 2                &&
-      length(var.default_map.modules.compartments.suffix)   == 0                && 
-      length(var.et_map.modules.compartments.suffix)        == 0                ? (
-        "${var.et_map.modules.compartments.prefix[0]}-${var.et_map.modules.compartments.prefix[1]}-${each.value.tags.freeform.label}"
-    ) : (
-                                                                                                    #names with et prefix and compartment suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             >= 1                && 
-      length(var.et_map.modules.compartments.prefix)        == 1                ? (
-        "${var.et_map.modules.compartments.prefix[0]}-${each.value.tags.freeform.label}-${each.value.suffix[0]}"
-    ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             >= 1                && 
-      length(var.et_map.modules.compartments.prefix)        >= 2                ? (
-        "${var.et_map.modules.compartments.prefix[0]}-${var.et_map.modules.compartments.prefix[1]}-${each.value.tags.freeform.label}-${each.value.suffix[0]}"
-    ) : (
-                                                                                                    #names with et prefix and et suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.et_map.modules.compartments.prefix)        == 1                &&
-      length(var.et_map.modules.compartments.suffix)        >= 1                ? (
-        "${var.et_map.modules.compartments.prefix[0]}-${each.value.tags.freeform.label}-${var.et_map.modules.compartments.suffix[0]}"
+      length(var.default_map["compartments"].prefix)        == 1                &&
+      length(var.default_map["compartments"].suffix)        == 0                ? (
+        "${var.default_map["compartments"].prefix[0]}-${each.value.tags.freeform.label}"
     ) : (
       length(each.value.prefix)                             == 0                && 
       length(each.value.suffix)                             == 0                && 
-      length(var.et_map.modules.compartments.prefix)        >= 2                &&
-      length(var.et_map.modules.compartments.suffix)        >= 1                ? (
-        "${var.et_map.modules.compartments.prefix[0]}-${var.et_map.modules.compartments.prefix[1]}-${each.value.tags.freeform.label}-${var.et_map.modules.compartments.suffix[0]}"
-    ) : (
-                                                                                                    #names with et prefix and default suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.et_map.modules.compartments.prefix)        == 1                &&
-      length(var.et_map.modules.compartments.suffix)        == 0                && 
-      length(var.default_map.modules.compartments.suffix)   >= 1                ? (
-        "${var.et_map.modules.compartments.prefix[0]}-${each.value.tags.freeform.label}-${var.default_map.modules.compartments.suffix[0]}"
-    ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.et_map.modules.compartments.prefix)        >= 2                &&
-      length(var.et_map.modules.compartments.suffix)        == 0                && 
-      length(var.default_map.modules.compartments.suffix)   >= 1                ? (
-        "${var.et_map.modules.compartments.prefix[0]}-${var.et_map.modules.compartments.prefix[1]}-${each.value.tags.freeform.label}-${var.default_map.modules.compartments.suffix[0]}"
-    ) : (
-                                                                                                    #names with default prefix and no suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.et_map.modules.compartments.prefix)        == 0                &&
-      length(var.et_map.modules.compartments.suffix)        == 0                && 
-      length(var.default_map.modules.compartments.prefix)   == 1                &&
-      length(var.default_map.modules.compartments.suffix)   == 0                ? (
-        "${var.default_map.modules.compartments.prefix[0]}-${each.value.tags.freeform.label}"
-    ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.et_map.modules.compartments.prefix)        == 0                &&
-      length(var.et_map.modules.compartments.suffix)        == 0                && 
-      length(var.default_map.modules.compartments.prefix)   >= 2                &&
-      length(var.default_map.modules.compartments.suffix)   == 0                ? (
-        "${var.default_map.modules.compartments.prefix[0]}-${var.default_map.modules.compartments.prefix[1]}-${each.value.tags.freeform.label}-${each.value.suffix[0]}"
+      length(var.default_map["compartments"].prefix)        >= 2                &&
+      length(var.default_map["compartments"].suffix)        == 0                ? (
+        "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.tags.freeform.label}-${each.value.suffix[0]}"
     ) : (
                                                                                                     #names with default prefix and compartment suffix
       length(each.value.prefix)                             == 0                && 
       length(each.value.suffix)                             >= 1                && 
-      length(var.et_map.modules.compartments.prefix)        == 0                &&
-      length(var.et_map.modules.compartments.suffix)        == 0                && 
-      length(var.default_map.modules.compartments.prefix)   == 1                &&
-      length(var.default_map.modules.compartments.suffix)   == 0                ? (
-        "${var.default_map.modules.compartments.prefix[0]}-${each.value.tags.freeform.label}-${each.value.suffix[0]}"
+      length(var.default_map["compartments"].prefix)        == 1                &&
+      length(var.default_map["compartments"].suffix)        == 0                ? (
+        "${var.default_map["compartments"].prefix[0]}-${each.value.tags.freeform.label}-${each.value.suffix[0]}"
     ) : (
       length(each.value.prefix)                             == 0                && 
       length(each.value.suffix)                             >= 1                && 
-      length(var.et_map.modules.compartments.prefix)        == 0                &&
-      length(var.et_map.modules.compartments.suffix)        == 0                && 
-      length(var.default_map.modules.compartments.prefix)   >= 2                &&
-      length(var.default_map.modules.compartments.suffix)   == 0                ? (
-        "${var.default_map.modules.compartments.prefix[0]}-${var.default_map.modules.compartments.prefix[1]}-${each.value.tags.freeform.label}-${each.value.suffix[0]}"
-    ) : (
-                                                                                                    #names with default prefix and et suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.et_map.modules.compartments.prefix)        == 0                &&
-      length(var.et_map.modules.compartments.suffix)        >= 1                && 
-      length(var.default_map.modules.compartments.prefix)   == 1                &&
-      length(var.default_map.modules.compartments.suffix)   == 0                ? (
-        "${var.default_map.modules.compartments.prefix[0]}-${each.value.tags.freeform.label}-${var.et_map.modules.compartments.suffix[0]}"
-    ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.et_map.modules.compartments.prefix)        == 0                &&
-      length(var.et_map.modules.compartments.suffix)        >= 1                && 
-      length(var.default_map.modules.compartments.prefix)   >= 2                &&
-      length(var.default_map.modules.compartments.suffix)   == 0                ? (
-        "${var.default_map.modules.compartments.prefix[0]}-${var.default_map.modules.compartments.prefix[1]}-${each.value.tags.freeform.label}-${var.et_map.modules.compartments.suffix[0]}"
+      length(var.default_map["compartments"].prefix)        >= 2                &&
+      length(var.default_map["compartments"].suffix)        == 0                ? (
+        "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.tags.freeform.label}-${each.value.suffix[0]}"
     ) : (
                                                                                                     #names with default prefix and default suffix
       length(each.value.prefix)                             == 0                && 
       length(each.value.suffix)                             == 0                && 
-      length(var.et_map.modules.compartments.prefix)        == 0                &&
-      length(var.et_map.modules.compartments.suffix)        == 0                && 
-      length(var.default_map.modules.compartments.prefix)   == 1                &&
-      length(var.default_map.modules.compartments.suffix)   >= 1                ? (
-        "${var.default_map.modules.compartments.prefix[0]}-${each.value.tags.freeform.label}-${var.default_map.modules.compartments.suffix[0]}"
+      length(var.default_map["compartments"].prefix)        == 1                &&
+      length(var.default_map["compartments"].suffix)        >= 1                ? (
+        "${var.default_map["compartments"].prefix[0]}-${each.value.tags.freeform.label}-${var.default_map["compartments"].suffix[0]}"
     ) : (
       length(each.value.prefix)                             == 0                && 
       length(each.value.suffix)                             == 0                && 
-      length(var.et_map.modules.compartments.prefix)        == 0                &&
-      length(var.et_map.modules.compartments.suffix)        == 0                && 
-      length(var.default_map.modules.compartments.prefix)   >= 2                &&
-      length(var.default_map.modules.compartments.suffix)   >= 1                ? (
-        "${var.default_map.modules.compartments.prefix[0]}-${var.default_map.modules.compartments.prefix[1]}-${each.value.tags.freeform.label}-${var.default_map.modules.compartments.suffix[0]}"
+      length(var.default_map["compartments"].prefix)        >= 2                &&
+      length(var.default_map["compartments"].suffix)        >= 1                ? (
+        "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.tags.freeform.label}-${var.default_map["compartments"].suffix[0]}"
     ) : (
                                                                                                     #yup you screwed up!
         "you should not see this"
-  )))))))))))))))))))))))))) 
+  ))))))))))))))
 }

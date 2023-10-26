@@ -14,13 +14,13 @@ resource "oci_identity_group" "v0_1_0" {
   }
   
     compartment_id                = (
-      each.value.parent                                       == "root"  ? (
-        var.tenancy_map.id
+      each.value.compartment                                  == "root"  ? (
+        var.id
        ) : (
-        var.compartment_map[each.value.parent].id
+        var.compartment_map[each.value.compartment].id
     ))
     defined_tags                  = each.value.tags.defined
     description                   = each.value.description
     freeform_tags                 = each.value.tags.freeform
-    name                          = each.key
+    name                          = each.value.tags.freeform.label
 }

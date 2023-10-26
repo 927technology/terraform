@@ -92,3 +92,39 @@ output "compartments-map"         {
                                   ]
   value                           = module.compartments_ggchild-data.map
 }
+
+
+#GROUPS########################################################################
+/*
+output "groups_initial-map"          {
+  depends_on                        = [ 
+                                        module.groups_initial-data 
+  ]
+  value                             = module.groups_initial-data.map
+}
+*/
+
+output "groups-map"                  {
+  depends_on                        = [ 
+                                        module.groups-data 
+  ]
+  value                             = module.groups-data.map
+}
+
+
+#USERS#########################################################################
+/*
+output "users_initial-map"          {
+  depends_on                        = [ 
+                                        module.users_initial-data 
+  ]
+  value                             = module.users_initial-data.map
+}
+*/
+
+output "users-map"                  {
+  depends_on                        = [ 
+                                        module.users-data 
+  ]
+  value                             = module.users-data.map
+}

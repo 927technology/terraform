@@ -109,53 +109,55 @@ variable "config" {
               }
             }
           ]
-          groups                    = {
-            group1                  = {
+          groups                    = [
+            {
+              compartment           = "root"
               description           = "first test group"
               enable                = true
               id                    = "afc9615c-4e7b-4f95-ad77-487a06bf0ffd"
-              parent                = "root"
+              members               = {
+                groups              = []
+                users               = [
+                                        "test1",
+                                        "test2"
+                ]
+              }
               tags                  = {
                 defined             = {}
-                freeform            = {}
+                freeform            = {
+                                        "label": "1st.test_group"
+
+                }
               }
-            }
-            group2                  = {
+            },
+            {
+              compartment           = "root"
               description           = "second test group"
               enable                = true
-              parent                = "root"
               id                    = "9633927b-8746-4ef1-bdba-f2749c85e7d1"
               tags                  = {
                 defined             = {}
-                freeform            = {}
+                freeform            = {
+                                        "label": "2nd.test_group"                  
+                }
               }
-            }
-            group_all               = {
-              description           = "all test group"
-              enable                = true
-              id                    = "998b95da-bc78-4cde-a2d7-799ad9443cb1"
-              parent                = "root"
-              tags                  = {
-                defined             = {}
-                freeform            = {}
-              }
-            }
-            group_all2               = {
+            },
+            {
+              compartment           = "root"
               description           = "all test group"
               enable                = true
               id                    = "00a4d7fa-83a2-45ce-9a7e-09c799d0c48d"
-              parent                = "root"
               tags                  = {
                 defined             = {}
-                freeform            = {}
+                freeform            = {
+                                        "label": "all.test_group"
+                }
               }
             }
-          }
+          ]
           modules                   = {
             compartments            = {
               enable                = true
-              prefix                = []
-              suffix                = []
               version               = null
             }
             groupmemberships        = {
@@ -167,6 +169,10 @@ variable "config" {
               version               = null
             }
             users                   = {
+              enable                = true
+              version               = null
+            }
+            vcns                    = {
               enable                = true
               version               = null
             }
@@ -212,13 +218,43 @@ variable "config" {
               }
             }
           ]
+          vcns                      = [
+            {
+              compartment           = "root"
+
+              byoipv6cidr_details   = {
+                byoipv6range_id     = null
+                ipv6cidr_block      = null
+              }
+              #cidr_block            = null       #depricated
+              cidr_blocks           = "10.1.0.0/16"
+              defined_tags          = {}
+              dns_label             = null
+              tags                  = {
+                defined             = {}
+                freeform            = {
+                                        "label": "test-vcn"
+                }
+              }
+              ipv6private_cidr_blocks = []
+              is_ipv6enabled        = false
+              is_oracle_gua_allocation_enabled = false
+            }
+          ]
         }
       }
-      default                     = {
-        application               = {}
-        infrastructure            = {
-          compartments            = {}
-          groups                  = {}
+      default                       = {
+        application                 = {}
+        infrastructure              = {
+          compartments              = {
+            prefix                  = [
+              "iad"
+            ]
+            suffix                  = [
+              "cmp"
+            ]
+          }
+          groups                    = {}
           modules                   = {
             compartments            = {
               enable                = true
@@ -242,8 +278,18 @@ variable "config" {
               enable                = true
               version               = "0.1.0"
             }
+            vcns                    = {
+              enable                = true
+              version               = "0.1.0"
+            }
           }
-          users                   = {}
+          users                     = {}
+          vcns                      = {
+            prefix                  = []
+            suffix                  = [
+                                        "vcn"
+            ]
+          }
         }
       }
     }
