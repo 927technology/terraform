@@ -1,0 +1,338 @@
+  "shapes" : [
+    {
+      "baseline_ocpu_utilizations" : []
+      "billing_type" : "PAID"
+      "gpu_description" : ""
+      "gpus" : 0
+      "is_billed_for_stopped_instance" : false
+      "is_flexible" : false
+      "is_live_migration_supported" : false
+      "is_subcore" : false
+      "local_disk_description" : ""
+      "local_disks" : 0
+      "local_disks_total_size_in_gbs" : 0
+      "max_vnic_attachment_options" : []
+      "max_vnic_attachments" : 256
+      "memory_in_gbs" : 1024
+      "memory_options" : []
+      "min_total_baseline_ocpus_required" : 0
+      "name" : "BM.Standard.A1.160"
+      "network_ports" : 2
+      "networking_bandwidth_in_gbps" : 100
+      "networking_bandwidth_options" : []
+      "ocpu_options" : []
+      "ocpus" : 160
+      "platform_config_options" : []
+      "processor_description" : "3.0 GHz Ampere® Altra™"
+      "quota_names" : [
+        "standard-a1-memory-count",
+        "standard-a1-memory-regional-count",
+        "standard-a1-core-count",
+        "standard-a1-core-regional-count",
+      ]
+      "rdma_bandwidth_in_gbps" : 0
+      "rdma_ports" : 0
+      "recommended_alternatives" : []
+      "resize_compatible_shapes" : []
+    },
+    {
+      "baseline_ocpu_utilizations" : []
+      "billing_type" : "LIMITED_FREE"
+      "gpu_description" : ""
+      "gpus" : 0
+      "is_billed_for_stopped_instance" : false
+      "is_flexible" : true
+      "is_live_migration_supported" : true
+      "is_subcore" : false
+      "local_disk_description" : ""
+      "local_disks" : 0
+      "local_disks_total_size_in_gbs" : 0
+      "max_vnic_attachment_options" : [
+        {
+          "default_per_ocpu" : 1
+          "max" : 24
+          "min" : 2
+        },
+      ]
+      "max_vnic_attachments" : 2
+      "memory_in_gbs" : 6
+      "memory_options" : [
+        {
+          "default_per_ocpu_in_gbs" : 6
+          "max_in_gbs" : 512
+          "max_per_numa_node_in_gbs" : 512
+          "max_per_ocpu_in_gbs" : 64
+          "min_in_gbs" : 1
+          "min_per_ocpu_in_gbs" : 1
+        },
+      ]
+      "min_total_baseline_ocpus_required" : 0
+      "name" : "VM.Standard.A1.Flex"
+      "network_ports" : 1
+      "networking_bandwidth_in_gbps" : 1
+      "networking_bandwidth_options" : [
+        {
+          "default_per_ocpu_in_gbps" : 1
+          "max_in_gbps" : 40
+          "min_in_gbps" : 1
+        },
+      ]
+      "ocpu_options" : [
+        {
+          "max" : 80
+          "max_per_numa_node" : 80
+          "min" : 1
+        },
+      ]
+      "ocpus" : 1
+      "platform_config_options" : []
+      "processor_description" : "3.0 GHz Ampere® Altra™"
+      "quota_names" : [
+        "standard-a1-memory-count",
+        "standard-a1-memory-regional-count",
+        "standard-a1-core-count",
+        "standard-a1-core-regional-count",
+      ]
+      "rdma_bandwidth_in_gbps" : 0
+      "rdma_ports" : 0
+      "recommended_alternatives" : []
+      "resize_compatible_shapes" : [
+        "VM.Standard.A1.Flex",
+      ]
+    },
+    {
+      "baseline_ocpu_utilizations" : []
+      "billing_type" : "PAID"
+      "gpu_description" : ""
+      "gpus" : 0
+      "is_billed_for_stopped_instance" : false
+      "is_flexible" : false
+      "is_live_migration_supported" : false
+      "is_subcore" : false
+      "local_disk_description" : ""
+      "local_disks" : 0
+      "local_disks_total_size_in_gbs" : 0
+      "max_vnic_attachment_options" : []
+      "max_vnic_attachments" : 256
+      "memory_in_gbs" : 1024
+      "memory_options" : []
+      "min_total_baseline_ocpus_required" : 0
+      "name" : "BM.Standard.A1.160"
+      "network_ports" : 2
+      "networking_bandwidth_in_gbps" : 100
+      "networking_bandwidth_options" : []
+      "ocpu_options" : []
+      "ocpus" : 160
+      "platform_config_options" : []
+      "processor_description" : "3.0 GHz Ampere® Altra™"
+      "quota_names" : [
+        "standard-a1-memory-count",
+        "standard-a1-memory-regional-count",
+        "standard-a1-core-count",
+        "standard-a1-core-regional-count",
+      ]
+      "rdma_bandwidth_in_gbps" : 0
+      "rdma_ports" : 0
+      "recommended_alternatives" : []
+      "resize_compatible_shapes" : []
+    },
+    {
+      "baseline_ocpu_utilizations" : []
+      "billing_type" : "LIMITED_FREE"
+      "gpu_description" : ""
+      "gpus" : 0
+      "is_billed_for_stopped_instance" : false
+      "is_flexible" : true
+      "is_live_migration_supported" : true
+      "is_subcore" : false
+      "local_disk_description" : ""
+      "local_disks" : 0
+      "local_disks_total_size_in_gbs" : 0
+      "max_vnic_attachment_options" : [
+        {
+          "default_per_ocpu" : 1
+          "max" : 24
+          "min" : 2
+        },
+      ]
+      "max_vnic_attachments" : 2
+      "memory_in_gbs" : 6
+      "memory_options" : [
+        {
+          "default_per_ocpu_in_gbs" : 6
+          "max_in_gbs" : 512
+          "max_per_numa_node_in_gbs" : 512
+          "max_per_ocpu_in_gbs" : 64
+          "min_in_gbs" : 1
+          "min_per_ocpu_in_gbs" : 1
+        },
+      ]
+      "min_total_baseline_ocpus_required" : 0
+      "name" : "VM.Standard.A1.Flex"
+      "network_ports" : 1
+      "networking_bandwidth_in_gbps" : 1
+      "networking_bandwidth_options" : [
+        {
+          "default_per_ocpu_in_gbps" : 1
+          "max_in_gbps" : 40
+          "min_in_gbps" : 1
+        },
+      ]
+      "ocpu_options" : [
+        {
+          "max" : 80
+          "max_per_numa_node" : 80
+          "min" : 1
+        },
+      ]
+      "ocpus" : 1
+      "platform_config_options" : []
+      "processor_description" : "3.0 GHz Ampere® Altra™"
+      "quota_names" : [
+        "standard-a1-memory-count",
+        "standard-a1-memory-regional-count",
+        "standard-a1-core-count",
+        "standard-a1-core-regional-count",
+      ]
+      "rdma_bandwidth_in_gbps" : 0
+      "rdma_ports" : 0
+      "recommended_alternatives" : []
+      "resize_compatible_shapes" : [
+        "VM.Standard.A1.Flex",
+      ]
+    },
+    {
+      "baseline_ocpu_utilizations" : []
+      "billing_type" : "ALWAYS_FREE"
+      "gpu_description" : ""
+      "gpus" : 0
+      "is_billed_for_stopped_instance" : false
+      "is_flexible" : false
+      "is_live_migration_supported" : true
+      "is_subcore" : false
+      "local_disk_description" : ""
+      "local_disks" : 0
+      "local_disks_total_size_in_gbs" : 0
+      "max_vnic_attachment_options" : []
+      "max_vnic_attachments" : 1
+      "memory_in_gbs" : 1
+      "memory_options" : []
+      "min_total_baseline_ocpus_required" : 0
+      "name" : "VM.Standard.E2.1.Micro"
+      "network_ports" : 1
+      "networking_bandwidth_in_gbps" : 0.47999998927116394
+      "networking_bandwidth_options" : []
+      "ocpu_options" : []
+      "ocpus" : 1
+      "platform_config_options" : []
+      "processor_description" : "2.0 GHz AMD EPYC™ 7551 (Naples)"
+      "quota_names" : [
+        "standard-e2-micro-core-count",
+      ]
+      "rdma_bandwidth_in_gbps" : 0
+      "rdma_ports" : 0
+      "recommended_alternatives" : []
+      "resize_compatible_shapes" : []
+    },
+    {
+      "baseline_ocpu_utilizations" : []
+      "billing_type" : "PAID"
+      "gpu_description" : ""
+      "gpus" : 0
+      "is_billed_for_stopped_instance" : false
+      "is_flexible" : false
+      "is_live_migration_supported" : false
+      "is_subcore" : false
+      "local_disk_description" : ""
+      "local_disks" : 0
+      "local_disks_total_size_in_gbs" : 0
+      "max_vnic_attachment_options" : []
+      "max_vnic_attachments" : 256
+      "memory_in_gbs" : 1024
+      "memory_options" : []
+      "min_total_baseline_ocpus_required" : 0
+      "name" : "BM.Standard.A1.160"
+      "network_ports" : 2
+      "networking_bandwidth_in_gbps" : 100
+      "networking_bandwidth_options" : []
+      "ocpu_options" : []
+      "ocpus" : 160
+      "platform_config_options" : []
+      "processor_description" : "3.0 GHz Ampere® Altra™"
+      "quota_names" : [
+        "standard-a1-memory-count",
+        "standard-a1-memory-regional-count",
+        "standard-a1-core-count",
+        "standard-a1-core-regional-count",
+      ]
+      "rdma_bandwidth_in_gbps" : 0
+      "rdma_ports" : 0
+      "recommended_alternatives" : []
+      "resize_compatible_shapes" : []
+    },
+    {
+      "baseline_ocpu_utilizations" : []
+      "billing_type" : "LIMITED_FREE"
+      "gpu_description" : ""
+      "gpus" : 0
+      "is_billed_for_stopped_instance" : false
+      "is_flexible" : true
+      "is_live_migration_supported" : true
+      "is_subcore" : false
+      "local_disk_description" : ""
+      "local_disks" : 0
+      "local_disks_total_size_in_gbs" : 0
+      "max_vnic_attachment_options" : [
+        {
+          "default_per_ocpu" : 1
+          "max" : 24
+          "min" : 2
+        },
+      ]
+      "max_vnic_attachments" : 2
+      "memory_in_gbs" : 6
+      "memory_options" : [
+        {
+          "default_per_ocpu_in_gbs" : 6
+          "max_in_gbs" : 512
+          "max_per_numa_node_in_gbs" : 512
+          "max_per_ocpu_in_gbs" : 64
+          "min_in_gbs" : 1
+          "min_per_ocpu_in_gbs" : 1
+        },
+      ]
+      "min_total_baseline_ocpus_required" : 0
+      "name" : "VM.Standard.A1.Flex"
+      "network_ports" : 1
+      "networking_bandwidth_in_gbps" : 1
+      "networking_bandwidth_options" : [
+        {
+          "default_per_ocpu_in_gbps" : 1
+          "max_in_gbps" : 40
+          "min_in_gbps" : 1
+        },
+      ]
+      "ocpu_options" : [
+        {
+          "max" : 80
+          "max_per_numa_node" : 80
+          "min" : 1
+        },
+      ]
+      "ocpus" : 1
+      "platform_config_options" : []
+      "processor_description" : "3.0 GHz Ampere® Altra™"
+      "quota_names" : [
+        "standard-a1-memory-count",
+        "standard-a1-memory-regional-count",
+        "standard-a1-core-count",
+        "standard-a1-core-regional-count",
+      ]
+      "rdma_bandwidth_in_gbps" : 0
+      "rdma_ports" : 0
+      "recommended_alternatives" : []
+      "resize_compatible_shapes" : [
+        "VM.Standard.A1.Flex",
+      ]
+    },
+  ]
