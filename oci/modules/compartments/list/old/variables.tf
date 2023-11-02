@@ -7,28 +7,19 @@ variable access_level               {
 variable after                      {
   default                           = []
 }
-
-variable compartments_map           {
-  default                           = {}
-  #sensitive                         = false
-}
-
 variable default_map                {
   default                           = {}
   #sensitive                         = false
 }
 
-variable et_map                     {
+variable tenancy_map                {
   default                           = {}
   #sensitive                         = false
 }
 
-variable relationship               {
+variable id                         {
   default                           = null
-  #sensitive                         = false
-}
-variable tenancy_map                {
-  default                           = {}
+  description                       = "value"
   #sensitive                         = false
 }
 

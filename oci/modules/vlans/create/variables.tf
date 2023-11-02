@@ -1,6 +1,5 @@
-
-variable after                      {
-  default                            = []
+variable compartment                {
+  default                           = null
 }
 
 variable compartment_map            {
@@ -17,4 +16,8 @@ variable et_map                     {
 
 variable tenancy_map                {
   default                           = {}
+}
+
+variable vcn_map                    {
+  default                           = null
 }

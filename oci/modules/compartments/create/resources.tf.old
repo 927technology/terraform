@@ -1,0 +1,158 @@
+resource "oci_identity_compartment" "v0_1_1" {
+  ##v0.1.1
+  for_each                        = { 
+    #for label, setting in var.et_map-compartments : label => setting
+    for setting in var.et_map.compartments : setting.tags.freeform.label => setting
+
+    if  ( var.default_map.modules.compartments.enable       == true             &&                  #is the default module enabled
+          var.et_map.modules.compartments.enable            == true             &&
+          setting.enable                                    == true             &&                  #is the et module enabled
+          setting.heirachy.relationship                     == var.relationship &&                  #is this run for my heirachy relationship?
+          ((var.default_map.modules.compartments.version    == "0.1.1"          &&                  #is the et module version 0.1.0 OR
+            var.et_map.modules.compartments.version         == null     )       ||
+           (var.et_map.modules.compartments.version         == "0.1.1"  )
+          )
+        )
+  }
+  
+  compartment_id                    = var.compartments_map[each.value.heirachy.parent].id
+  #defined_tags                      = each.value.compartment.defined_tags
+  description                       = each.value.description
+  enable_delete                     = each.value.enable_delete
+  #freeform_tags                     = each.value.tags.freeform
+  freeform_tags                     = (merge(
+    {
+      for label, setting in each.value.tags.freeform : 
+        label => setting
+    },
+    { 
+      "relationship" = each.value.heirachy.relationship,
+      "state" = (
+          try(var.compartments_map[each.value.label].freeform_tags.state, 0) == 0  ? (
+          #try(each.value.freeform_tags.state, 0) == 0                 ? ( 
+
+
+            1
+        ) : (
+          try(var.compartments_map[each.value.label].freeform_tags.state, 0) == 1  ? (
+          #try(each.value.tags.freeform.state, 0) == 1                 ? (
+            2
+        ) : (
+          try(var.compartments_map[each.value.label].freeform_tags.state, 0) == 2   ? (
+          #try(each.value.tags.freeform.state, 0) == 2                 ? (
+            2
+        ) : (
+            3
+      )))),
+
+      "timestamp" = (
+        try(var.compartments_map[each.value.label].freeform_tags.state, 0)  != 2                  ? ( 
+          timestamp()
+        ) : (
+          each.value.tags.freeform.timestamp
+      ))
+    }
+  ))
+  name                              = ( 
+                                                                                                    #names with no prefix or suffix
+      length(each.value.prefix)                             == 0                && 
+      length(each.value.suffix)                             == 0                && 
+      length(var.default_map["compartments"].prefix)        == 0                && 
+      length(var.default_map["compartments"].suffix)        == 0                ? ( 
+        each.value.tags.freeform.label
+    ) : (
+                                                                                                    #names with compartment prefix and no suffix
+      length(each.value.prefix)                             == 1                &&
+      length(each.value.suffix)                             == 0                &&
+      length(var.default_map["compartments"].suffix)        == 0                ? ( 
+        "${each.value.prefix[0]}-${each.value.tags.freeform.label}"
+    ) : (
+      length(each.value.prefix)                             >= 2                &&
+      length(each.value.suffix)                             == 0                &&
+      length(var.default_map["compartments"].suffix)        == 0                ? ( 
+        "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.tags.freeform.label}"
+    ) : (
+                                                                                                    #names with compartment prefix and compartment suffix
+      length(each.value.prefix)                             == 1                &&
+      length(each.value.suffix)                             >= 1                ? (
+        "${each.value.prefix[0]}-${each.value.tags.freeform.label}-${each.value.suffix[0]}"
+    ) : (
+      length(each.value.prefix)                             >= 2                &&
+      length(each.value.suffix)                             >= 1                ? (
+        "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.tags.freeform.label}-${each.value.suffix[0]}"
+    ) : (
+                                                                                                    #names with compartment prefix and default suffix
+      length(each.value.prefix)                             == 1                &&
+      length(each.value.suffix)                             == 0                &&
+      length(var.default_map["compartments"].suffix)        >= 1                ? (
+        "${each.value.prefix[0]}-${each.value.tags.freeform.label}-${var.default_map["compartments"].suffix[0]}"
+    ) : (
+      length(each.value.prefix)                             >= 2                &&
+      length(each.value.suffix)                             == 0                &&
+      length(var.default_map["compartments"].suffix)        >= 1                ? (
+        "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.tags.freeform.label}-${var.default_map["compartments"].suffix[0]}"
+    ) : (
+      length(each.value.prefix)                             == 0                && 
+      length(each.value.suffix)                             == 0                && 
+      length(var.default_map["compartments"].prefix)        == 1                &&
+      length(var.default_map["compartments"].suffix)        == 0                ? (
+        "${var.default_map["compartments"].prefix[0]}-${each.value.tags.freeform.label}"
+    ) : (
+      length(each.value.prefix)                             == 0                && 
+      length(each.value.suffix)                             == 0                && 
+      length(var.default_map["compartments"].prefix)        >= 2                &&
+      length(var.default_map["compartments"].suffix)        == 0                ? (
+        "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.tags.freeform.label}-${each.value.suffix[0]}"
+    ) : (
+                                                                                                    #names with default prefix and compartment suffix
+      length(each.value.prefix)                             == 0                && 
+      length(each.value.suffix)                             >= 1                && 
+      length(var.default_map["compartments"].prefix)        == 1                &&
+      length(var.default_map["compartments"].suffix)        == 0                ? (
+        "${var.default_map["compartments"].prefix[0]}-${each.value.tags.freeform.label}-${each.value.suffix[0]}"
+    ) : (
+      length(each.value.prefix)                             == 0                && 
+      length(each.value.suffix)                             >= 1                && 
+      length(var.default_map["compartments"].prefix)        >= 2                &&
+      length(var.default_map["compartments"].suffix)        == 0                ? (
+        "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.tags.freeform.label}-${each.value.suffix[0]}"
+    ) : (
+                                                                                                    #names with default prefix and default suffix
+      length(each.value.prefix)                             == 0                && 
+      length(each.value.suffix)                             == 0                && 
+      length(var.default_map["compartments"].prefix)        == 1                &&
+      length(var.default_map["compartments"].suffix)        >= 1                ? (
+        "${var.default_map["compartments"].prefix[0]}-${each.value.tags.freeform.label}-${var.default_map["compartments"].suffix[0]}"
+    ) : (
+      length(each.value.prefix)                             == 0                && 
+      length(each.value.suffix)                             == 0                && 
+      length(var.default_map["compartments"].prefix)        >= 2                &&
+      length(var.default_map["compartments"].suffix)        >= 1                ? (
+        "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.tags.freeform.label}-${var.default_map["compartments"].suffix[0]}"
+    ) : (
+                                                                                                    #names with default prefix
+      length(each.value.prefix)                             == 0                && 
+      length(each.value.suffix)                             == 0                && 
+      length(var.default_map["compartments"].prefix)        == 1                &&
+      length(var.default_map["compartments"].suffix)        >= 1                ? (
+        "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.tags.freeform.label}-${var.default_map["compartments"].suffix[0]}"
+    ) : (
+
+      length(each.value.prefix)                             == 0                && 
+      length(each.value.suffix)                             == 0                && 
+      length(var.default_map["compartments"].prefix)        >= 2                &&
+      length(var.default_map["compartments"].suffix)        >= 0                ? (
+        "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.tags.freeform.label}-${var.default_map["compartments"].suffix[0]}"
+    ) : (
+
+                                                                                                    #names with default suffix
+      length(each.value.prefix)                             == 0                && 
+      length(each.value.suffix)                             == 0                && 
+      length(var.default_map["compartments"].prefix)        == 0                &&
+      length(var.default_map["compartments"].suffix)        >= 1                ? (
+        "${each.value.tags.freeform.label}-${var.default_map["compartments"].suffix[0]}"
+    ) : (
+                                                                                                    #yup you screwed up!
+        "you should not see this"
+  )))))))))))))))))
+}

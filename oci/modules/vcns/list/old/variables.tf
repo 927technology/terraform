@@ -1,6 +1,5 @@
-
 variable after                      {
-  default                            = []
+  default                           = null
 }
 
 variable compartment_map            {
@@ -8,7 +7,7 @@ variable compartment_map            {
 }
 
 variable default_map                {
-  default                           = {}
+  default                           = null
 }
 
 variable et_map                     {
