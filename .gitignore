@@ -1,4 +1,5 @@
 oci/tenancy.tf
+oci/v.tenancy.tf
 oci/.terraform*
 oci/terraform.tfstate
 oci/terraform.tfstate.backup
