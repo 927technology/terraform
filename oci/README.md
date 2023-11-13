@@ -11,7 +11,7 @@
     * [Groups](./documentation/groups.md)
     * [Users](./documentation/users.md)
   * Network
-    * [Dynamic Routing Gateway](./documentation/dynamic_routing_gateway.md)
+    * [Dynamic Routing Gateway](./documentation/drg.md)
     * [Internet Gateway](./documentation/internet_gateway.md)
     * [Local Peering Gateway](./documentation/local_peering_gateway.md)
     * [NAT Gateway](./documentation/nat_gateway.md)
