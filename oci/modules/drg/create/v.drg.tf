@@ -15,10 +15,14 @@ variable et_map                     {
   default                           = {}
 }
 
+variable route_table_map            {
+  default                           = {}
+}
+
 variable tenancy_map                {
   default                           = {}
 }
 
-variable vcns_map                    {
+variable vcns_map                   {
   default                           = {}
 }

@@ -1,7 +1,7 @@
 output  "list"                      {
   description                       = "display a list of existing compartments at d5/final cycle.  this includes all levels already known in the infrastructure."
   sensitive                         = false
-  value                             = (concat(
+  value                             = concat(
     data.oci_identity_compartments.list.compartments,
     [
       {
@@ -18,13 +18,13 @@ output  "list"                      {
         "time_created"              = var.tenancy_map.time_created
       }
     ]
-  ))
+  )
 }
 
 output  "map"                       {
   description                       = "display a map of existing compartments at d5/final cycle.  this includes all levels already known in the infrastructure."
   sensitive                         = false
-  value                             = (merge(
+  value                             = merge(
     {
       for label, setting in data.oci_identity_compartments.list.compartments : 
         setting.freeform_tags.label => setting
@@ -44,7 +44,7 @@ output  "map"                       {
         "time_created"              = var.tenancy_map.time_created
       }
     }
-  ))
+  )
 }
 
 output "raw" {

@@ -18,7 +18,3 @@ variable et_map                     {
 variable tenancy_map                {
   default                           = {}
 }
-
-variable vcns_map                    {
-  default                           = {}
-}

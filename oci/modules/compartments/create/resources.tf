@@ -21,13 +21,13 @@ resource "oci_identity_compartment" "v0_1_1-d1" {
       setting.label => setting
 
     if  ( 
-        var.default_map.modules.compartments.enable         == true             &&                  #is the default module enabled
-        var.et_map.modules.compartments.enable              == true             &&
-        setting.enable                                      == true             &&                  #is the et module enabled
-        setting.depth                                       == 1                &&
-        ((var.default_map.modules.compartments.version      == "0.1.1"          &&                  #is the et module version 0.1.0 OR
-          var.et_map.modules.compartments.version           == null     )       ||
-          (var.et_map.modules.compartments.version          == "0.1.1"  )
+        var.default_map.modules.compartments.enable                   == true             &&        #is the default module enabled
+        var.et_map.modules.compartments.enable                        == true             &&
+        setting.enable                                                == true             &&        #is the et module enabled
+        setting.depth                                                 == 1                &&
+        ((var.default_map.modules.compartments.version                == "0.1.1"          &&        #is the et module version 0.1.1 OR
+          var.et_map.modules.compartments.version                     == null     )       ||
+          (var.et_map.modules.compartments.version                    == "0.1.1"  )
         )
       )
   }
@@ -51,113 +51,106 @@ resource "oci_identity_compartment" "v0_1_1-d1" {
 
   name                              = ( 
                                                                                                     #names with no prefix or suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 0                && 
-      length(var.default_map["compartments"].suffix)        == 0                ? ( 
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 0                && 
+      length(var.default_map["compartments"].suffix)                  == 0                ? ( 
         each.value.name
     ) : (
                                                                                                     #names with compartment prefix and no suffix
-      length(each.value.prefix)                             == 1                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? ( 
+      length(each.value.prefix)                                       == 1                &&
+      length(each.value.suffix)                                       == 0                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? ( 
         "${each.value.prefix[0]}-${each.value.name}"
     ) : (
-      length(each.value.prefix)                             >= 2                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? ( 
+      length(each.value.prefix)                                       >= 2                &&
+      length(each.value.suffix)                                       == 0                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? ( 
         "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.name}"
     ) : (
                                                                                                     #names with compartment prefix and compartment suffix
-      length(each.value.prefix)                             == 1                &&
-      length(each.value.suffix)                             >= 1                ? (
+      length(each.value.prefix)                                       == 1                &&
+      length(each.value.suffix)                                       >= 1                ? (
         "${each.value.prefix[0]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
-      length(each.value.prefix)                             >= 2                &&
-      length(each.value.suffix)                             >= 1                ? (
+      length(each.value.prefix)                                       >= 2                &&
+      length(each.value.suffix)                                       >= 1                ? (
         "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
                                                                                                     #names with compartment prefix and default suffix
-      length(each.value.prefix)                             == 1                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 1                &&
+      length(each.value.suffix)                                       == 0                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${each.value.prefix[0]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
-      length(each.value.prefix)                             >= 2                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       >= 2                &&
+      length(each.value.suffix)                                       == 0                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 1                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 1                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${each.value.name}"
     ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        >= 2                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  >= 2                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
                                                                                                     #names with default prefix and compartment suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             >= 1                && 
-      length(var.default_map["compartments"].prefix)        == 1                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       >= 1                && 
+      length(var.default_map["compartments"].prefix)                  == 1                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             >= 1                && 
-      length(var.default_map["compartments"].prefix)        >= 2                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       >= 1                && 
+      length(var.default_map["compartments"].prefix)                  >= 2                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
                                                                                                     #names with default prefix and default suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 1                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 1                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${var.default_map["compartments"].prefix[0]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        >= 2                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  >= 2                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
                                                                                                     #names with default prefix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 1                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 1                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
 
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        >= 2                &&
-      length(var.default_map["compartments"].suffix)        >= 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  >= 2                &&
+      length(var.default_map["compartments"].suffix)                  >= 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
 
                                                                                                     #names with default suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 0                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 0                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
                                                                                                     #yup you screwed up!
         "you should not see this"
   )))))))))))))))))
-
-  /*
-  provisioner "local-exec"          {                                                               #wait let things bake in
-    interpreter                     = ["bash", "-c"]
-    command                         = "sleep 10"
-  }
-  */
 }
 
 data "oci_identity_compartments"    "list-d1"   {
@@ -185,13 +178,13 @@ resource "oci_identity_compartment" "v0_1_1-d2" {
     for setting in var.et_map.compartments :
       setting.label => setting
 
-    if  ( var.default_map.modules.compartments.enable       == true             &&                  #is the default module enabled
-          var.et_map.modules.compartments.enable            == true             &&
-          setting.enable                                    == true             &&                  #is the et module enabled
-          setting.depth                                     == 2                &&
-          ((var.default_map.modules.compartments.version    == "0.1.1"          &&                  #is the et module version 0.1.0 OR
-            var.et_map.modules.compartments.version         == null     )       ||
-           (var.et_map.modules.compartments.version         == "0.1.1"  )
+    if  ( var.default_map.modules.compartments.enable                 == true             &&        #is the default module enabled
+          var.et_map.modules.compartments.enable                      == true             &&
+          setting.enable                                              == true             &&        #is the et module enabled
+          setting.depth                                               == 2                &&
+          ((var.default_map.modules.compartments.version              == "0.1.1"          &&        #is the et module version 0.1.0 OR
+            var.et_map.modules.compartments.version                   == null     )       ||
+           (var.et_map.modules.compartments.version                   == "0.1.1"  )
           )
         )
   }
@@ -222,113 +215,106 @@ resource "oci_identity_compartment" "v0_1_1-d2" {
 
   name                              = ( 
                                                                                                     #names with no prefix or suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 0                && 
-      length(var.default_map["compartments"].suffix)        == 0                ? ( 
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 0                && 
+      length(var.default_map["compartments"].suffix)                  == 0                ? ( 
         each.value.name
     ) : (
                                                                                                     #names with compartment prefix and no suffix
-      length(each.value.prefix)                             == 1                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? ( 
+      length(each.value.prefix)                                       == 1                &&
+      length(each.value.suffix)                                       == 0                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? ( 
         "${each.value.prefix[0]}-${each.value.name}"
     ) : (
-      length(each.value.prefix)                             >= 2                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? ( 
+      length(each.value.prefix)                                       >= 2                &&
+      length(each.value.suffix)                                       == 0                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? ( 
         "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.name}"
     ) : (
                                                                                                     #names with compartment prefix and compartment suffix
-      length(each.value.prefix)                             == 1                &&
-      length(each.value.suffix)                             >= 1                ? (
+      length(each.value.prefix)                                       == 1                &&
+      length(each.value.suffix)                                       >= 1                ? (
         "${each.value.prefix[0]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
-      length(each.value.prefix)                             >= 2                &&
-      length(each.value.suffix)                             >= 1                ? (
+      length(each.value.prefix)                                       >= 2                &&
+      length(each.value.suffix)                                       >= 1                ? (
         "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
                                                                                                     #names with compartment prefix and default suffix
-      length(each.value.prefix)                             == 1                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 1                &&
+      length(each.value.suffix)                                       == 0                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${each.value.prefix[0]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
-      length(each.value.prefix)                             >= 2                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       >= 2                &&
+      length(each.value.suffix)                                       == 0                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 1                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 1                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${each.value.name}"
     ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        >= 2                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  >= 2                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
                                                                                                     #names with default prefix and compartment suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             >= 1                && 
-      length(var.default_map["compartments"].prefix)        == 1                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       >= 1                && 
+      length(var.default_map["compartments"].prefix)                  == 1                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             >= 1                && 
-      length(var.default_map["compartments"].prefix)        >= 2                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       >= 1                && 
+      length(var.default_map["compartments"].prefix)                  >= 2                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
                                                                                                     #names with default prefix and default suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 1                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 1                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${var.default_map["compartments"].prefix[0]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        >= 2                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  >= 2                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
                                                                                                     #names with default prefix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 1                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 1                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
 
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        >= 2                &&
-      length(var.default_map["compartments"].suffix)        >= 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  >= 2                &&
+      length(var.default_map["compartments"].suffix)                  >= 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
 
                                                                                                     #names with default suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 0                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 0                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
                                                                                                     #yup you screwed up!
         "you should not see this"
   )))))))))))))))))
-
-  /*
-  provisioner "local-exec"          {                                                               #wait let things bake in
-    interpreter                     = ["bash", "-c"]
-    command                         = "sleep 10"
-  }
-  */
 }
 
 data "oci_identity_compartments"    "list-d2"   {
@@ -358,13 +344,13 @@ resource "oci_identity_compartment" "v0_1_1-d3" {
     for setting in var.et_map.compartments :
       setting.label => setting
 
-    if  ( var.default_map.modules.compartments.enable       == true             &&                  #is the default module enabled
-          var.et_map.modules.compartments.enable            == true             &&
-          setting.enable                                    == true             &&                  #is the et module enabled
-          setting.depth                                     == 3                &&
-          ((var.default_map.modules.compartments.version    == "0.1.1"          &&                  #is the et module version 0.1.0 OR
-            var.et_map.modules.compartments.version         == null     )       ||
-           (var.et_map.modules.compartments.version         == "0.1.1"  )
+    if  ( var.default_map.modules.compartments.enable                 == true             &&        #is the default module enabled
+          var.et_map.modules.compartments.enable                      == true             &&
+          setting.enable                                              == true             &&        #is the et module enabled
+          setting.depth                                               == 3                &&
+          ((var.default_map.modules.compartments.version              == "0.1.1"          &&        #is the et module version 0.1.0 OR
+            var.et_map.modules.compartments.version                   == null     )       ||
+           (var.et_map.modules.compartments.version                     == "0.1.1"  )
           )
         )
   }
@@ -397,101 +383,101 @@ resource "oci_identity_compartment" "v0_1_1-d3" {
 
   name                              = ( 
                                                                                                     #names with no prefix or suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 0                && 
-      length(var.default_map["compartments"].suffix)        == 0                ? ( 
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 0                && 
+      length(var.default_map["compartments"].suffix)                  == 0                ? ( 
         each.value.name
     ) : (
                                                                                                     #names with compartment prefix and no suffix
-      length(each.value.prefix)                             == 1                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? ( 
+      length(each.value.prefix)                                       == 1                &&
+      length(each.value.suffix)                                       == 0                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? ( 
         "${each.value.prefix[0]}-${each.value.name}"
     ) : (
-      length(each.value.prefix)                             >= 2                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? ( 
+      length(each.value.prefix)                                       >= 2                &&
+      length(each.value.suffix)                                       == 0                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? ( 
         "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.name}"
     ) : (
                                                                                                     #names with compartment prefix and compartment suffix
-      length(each.value.prefix)                             == 1                &&
-      length(each.value.suffix)                             >= 1                ? (
+      length(each.value.prefix)                                       == 1                &&
+      length(each.value.suffix)                                       >= 1                ? (
         "${each.value.prefix[0]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
-      length(each.value.prefix)                             >= 2                &&
-      length(each.value.suffix)                             >= 1                ? (
+      length(each.value.prefix)                                       >= 2                &&
+      length(each.value.suffix)                                       >= 1                ? (
         "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
                                                                                                     #names with compartment prefix and default suffix
-      length(each.value.prefix)                             == 1                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 1                &&
+      length(each.value.suffix)                                       == 0                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${each.value.prefix[0]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
-      length(each.value.prefix)                             >= 2                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       >= 2                &&
+      length(each.value.suffix)                                       == 0                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 1                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 1                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${each.value.name}"
     ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        >= 2                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  >= 2                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
                                                                                                     #names with default prefix and compartment suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             >= 1                && 
-      length(var.default_map["compartments"].prefix)        == 1                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       >= 1                && 
+      length(var.default_map["compartments"].prefix)                  == 1                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             >= 1                && 
-      length(var.default_map["compartments"].prefix)        >= 2                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       >= 1                && 
+      length(var.default_map["compartments"].prefix)                  >= 2                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
                                                                                                     #names with default prefix and default suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 1                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 1                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${var.default_map["compartments"].prefix[0]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        >= 2                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  >= 2                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
                                                                                                     #names with default prefix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 1                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 1                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
 
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        >= 2                &&
-      length(var.default_map["compartments"].suffix)        >= 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  >= 2                &&
+      length(var.default_map["compartments"].suffix)                  >= 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
 
                                                                                                     #names with default suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 0                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 0                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
                                                                                                     #yup you screwed up!
@@ -535,13 +521,13 @@ resource "oci_identity_compartment" "v0_1_1-d4" {
     for setting in var.et_map.compartments :
       setting.label => setting
 
-    if  ( var.default_map.modules.compartments.enable       == true             &&                  #is the default module enabled
-          var.et_map.modules.compartments.enable            == true             &&
-          setting.enable                                    == true             &&                  #is the et module enabled
-          setting.depth                                     == 4                &&
-          ((var.default_map.modules.compartments.version    == "0.1.1"          &&                  #is the et module version 0.1.0 OR
-            var.et_map.modules.compartments.version         == null     )       ||
-           (var.et_map.modules.compartments.version         == "0.1.1"  )
+    if  ( var.default_map.modules.compartments.enable                 == true             &&        #is the default module enabled
+          var.et_map.modules.compartments.enable                      == true             &&
+          setting.enable                                              == true             &&        #is the et module enabled
+          setting.depth                                               == 4                &&
+          ((var.default_map.modules.compartments.version              == "0.1.1"          &&        #is the et module version 0.1.0 OR
+            var.et_map.modules.compartments.version                   == null     )       ||
+           (var.et_map.modules.compartments.version                   == "0.1.1"  )
           )
         )
   }
@@ -576,113 +562,106 @@ resource "oci_identity_compartment" "v0_1_1-d4" {
 
   name                              = ( 
                                                                                                     #names with no prefix or suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 0                && 
-      length(var.default_map["compartments"].suffix)        == 0                ? ( 
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 0                && 
+      length(var.default_map["compartments"].suffix)                  == 0                ? ( 
         each.value.name
     ) : (
                                                                                                     #names with compartment prefix and no suffix
-      length(each.value.prefix)                             == 1                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? ( 
+      length(each.value.prefix)                                       == 1                &&
+      length(each.value.suffix)                                       == 0                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? ( 
         "${each.value.prefix[0]}-${each.value.name}"
     ) : (
-      length(each.value.prefix)                             >= 2                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? ( 
+      length(each.value.prefix)                                       >= 2                &&
+      length(each.value.suffix)                                       == 0                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? ( 
         "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.name}"
     ) : (
                                                                                                     #names with compartment prefix and compartment suffix
-      length(each.value.prefix)                             == 1                &&
-      length(each.value.suffix)                             >= 1                ? (
+      length(each.value.prefix)                                       == 1                &&
+      length(each.value.suffix)                                       >= 1                ? (
         "${each.value.prefix[0]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
-      length(each.value.prefix)                             >= 2                &&
-      length(each.value.suffix)                             >= 1                ? (
+      length(each.value.prefix)                                       >= 2                &&
+      length(each.value.suffix)                                       >= 1                ? (
         "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
                                                                                                     #names with compartment prefix and default suffix
-      length(each.value.prefix)                             == 1                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 1                &&
+      length(each.value.suffix)                                       == 0                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${each.value.prefix[0]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
-      length(each.value.prefix)                             >= 2                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       >= 2                &&
+      length(each.value.suffix)                                       == 0                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 1                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 1                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${each.value.name}"
     ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        >= 2                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  >= 2                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
                                                                                                     #names with default prefix and compartment suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             >= 1                && 
-      length(var.default_map["compartments"].prefix)        == 1                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       >= 1                && 
+      length(var.default_map["compartments"].prefix)                  == 1                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             >= 1                && 
-      length(var.default_map["compartments"].prefix)        >= 2                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       >= 1                && 
+      length(var.default_map["compartments"].prefix)                  >= 2                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
                                                                                                     #names with default prefix and default suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 1                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 1                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${var.default_map["compartments"].prefix[0]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        >= 2                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  >= 2                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
                                                                                                     #names with default prefix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 1                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 1                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
 
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        >= 2                &&
-      length(var.default_map["compartments"].suffix)        >= 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  >= 2                &&
+      length(var.default_map["compartments"].suffix)                  >= 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
 
                                                                                                     #names with default suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 0                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 0                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
                                                                                                     #yup you screwed up!
         "you should not see this"
   )))))))))))))))))
-
-  /*
-  provisioner "local-exec"          {                                                               #wait let things bake in
-    interpreter                     = ["bash", "-c"]
-    command                         = "sleep 10"
-  }
-  */
 }
 
 data "oci_identity_compartments"    "list-d4"   {
@@ -716,13 +695,13 @@ resource "oci_identity_compartment" "v0_1_1-d5" {
     for setting in var.et_map.compartments :
       setting.label => setting
 
-    if  ( var.default_map.modules.compartments.enable       == true             &&                  #is the default module enabled
-          var.et_map.modules.compartments.enable            == true             &&
-          setting.enable                                    == true             &&                  #is the et module enabled
-          setting.depth                                     == 5                &&
-          ((var.default_map.modules.compartments.version    == "0.1.1"          &&                  #is the et module version 0.1.0 OR
-            var.et_map.modules.compartments.version         == null     )       ||
-           (var.et_map.modules.compartments.version         == "0.1.1"  )
+    if  ( var.default_map.modules.compartments.enable                 == true             &&        #is the default module enabled
+          var.et_map.modules.compartments.enable                      == true             &&
+          setting.enable                                              == true             &&        #is the et module enabled
+          setting.depth                                               == 5                &&
+          ((var.default_map.modules.compartments.version              == "0.1.1"          &&        #is the et module version 0.1.0 OR
+            var.et_map.modules.compartments.version                   == null     )       ||
+           (var.et_map.modules.compartments.version                   == "0.1.1"  )
           )
         )
   }
@@ -757,111 +736,104 @@ resource "oci_identity_compartment" "v0_1_1-d5" {
 
   name                              = ( 
                                                                                                     #names with no prefix or suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 0                && 
-      length(var.default_map["compartments"].suffix)        == 0                ? ( 
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 0                && 
+      length(var.default_map["compartments"].suffix)                  == 0                ? ( 
         each.value.name
     ) : (
                                                                                                     #names with compartment prefix and no suffix
-      length(each.value.prefix)                             == 1                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? ( 
+      length(each.value.prefix)                                       == 1                &&
+      length(each.value.suffix)                                       == 0                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? ( 
         "${each.value.prefix[0]}-${each.value.name}"
     ) : (
-      length(each.value.prefix)                             >= 2                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? ( 
+      length(each.value.prefix)                                       >= 2                &&
+      length(each.value.suffix)                                       == 0                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? ( 
         "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.name}"
     ) : (
                                                                                                     #names with compartment prefix and compartment suffix
-      length(each.value.prefix)                             == 1                &&
-      length(each.value.suffix)                             >= 1                ? (
+      length(each.value.prefix)                                       == 1                &&
+      length(each.value.suffix)                                       >= 1                ? (
         "${each.value.prefix[0]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
-      length(each.value.prefix)                             >= 2                &&
-      length(each.value.suffix)                             >= 1                ? (
+      length(each.value.prefix)                                       >= 2                &&
+      length(each.value.suffix)                                       >= 1                ? (
         "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
                                                                                                     #names with compartment prefix and default suffix
-      length(each.value.prefix)                             == 1                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 1                &&
+      length(each.value.suffix)                                       == 0                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${each.value.prefix[0]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
-      length(each.value.prefix)                             >= 2                &&
-      length(each.value.suffix)                             == 0                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       >= 2                &&
+      length(each.value.suffix)                                       == 0                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${each.value.prefix[0]}-${each.value.prefix[1]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 1                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 1                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${each.value.name}"
     ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        >= 2                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  >= 2                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
                                                                                                     #names with default prefix and compartment suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             >= 1                && 
-      length(var.default_map["compartments"].prefix)        == 1                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       >= 1                && 
+      length(var.default_map["compartments"].prefix)                  == 1                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             >= 1                && 
-      length(var.default_map["compartments"].prefix)        >= 2                &&
-      length(var.default_map["compartments"].suffix)        == 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       >= 1                && 
+      length(var.default_map["compartments"].prefix)                  >= 2                &&
+      length(var.default_map["compartments"].suffix)                  == 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${each.value.suffix[0]}"
     ) : (
                                                                                                     #names with default prefix and default suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 1                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 1                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${var.default_map["compartments"].prefix[0]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        >= 2                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  >= 2                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
                                                                                                     #names with default prefix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 1                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 1                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
 
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        >= 2                &&
-      length(var.default_map["compartments"].suffix)        >= 0                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  >= 2                &&
+      length(var.default_map["compartments"].suffix)                  >= 0                ? (
         "${var.default_map["compartments"].prefix[0]}-${var.default_map["compartments"].prefix[1]}-${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
 
                                                                                                     #names with default suffix
-      length(each.value.prefix)                             == 0                && 
-      length(each.value.suffix)                             == 0                && 
-      length(var.default_map["compartments"].prefix)        == 0                &&
-      length(var.default_map["compartments"].suffix)        >= 1                ? (
+      length(each.value.prefix)                                       == 0                && 
+      length(each.value.suffix)                                       == 0                && 
+      length(var.default_map["compartments"].prefix)                  == 0                &&
+      length(var.default_map["compartments"].suffix)                  >= 1                ? (
         "${each.value.name}-${var.default_map["compartments"].suffix[0]}"
     ) : (
                                                                                                     #yup you screwed up!
         "you should not see this"
   )))))))))))))))))
-
-  /*
-  provisioner "local-exec"          {                                                               #wait let things bake in
-    interpreter                     = ["bash", "-c"]
-    command                         = "sleep 10"
-  }
-  */
 }

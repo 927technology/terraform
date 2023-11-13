@@ -11,7 +11,15 @@ variable default_map                {
   default                           = {}
 }
 
+variable internet_gateway_map       {
+  default                           = {}
+}
+
 variable et_map                     {
+  default                           = {}
+}
+
+variable service_gateway_map        {
   default                           = {}
 }
 

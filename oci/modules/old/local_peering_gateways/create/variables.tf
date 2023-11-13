@@ -1,10 +1,9 @@
-
 variable after                      {
-  default                           = []
+  default                            = []
 }
 
-variable compartments_map           {
-  default                           = null
+variable compartments_map            {
+  default                           = {}
 }
 
 variable default_map                {

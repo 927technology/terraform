@@ -39,17 +39,25 @@ variable "config" {
               parent                = "shared"
               prefix                = []
               suffix                = []
+              tags                  = {
+                defined             = {}
+                freeform            = {}
+              }
             },           
             { #/shared/network/lpg
               depth                 = 3
               description           = "/shared/network/lpg"
-              enable                = true
+              enable                = false
               enable_delete         = true
               name                  = "lpg"
               label                 = "shared-network-lpg"
               parent                = "shared-network"
               prefix                = []
               suffix                = []
+              tags                  = {
+                defined             = {}
+                freeform            = {}
+              }
             },
             { #/uae
               depth                 = 1
@@ -61,6 +69,10 @@ variable "config" {
               parent                = "root"
               prefix                = []
               suffix                = []
+              tags                  = {
+                defined             = {}
+                freeform            = {}
+              }
             },
             { #/uae/network
               depth                 = 2
@@ -72,6 +84,10 @@ variable "config" {
               parent                = "uae"
               prefix                = []
               suffix                = []
+              tags                  = {
+                defined             = {}
+                freeform            = {}
+              }
             },
             { #/uae/application
               depth                 = 2
@@ -83,6 +99,24 @@ variable "config" {
               parent                = "uae"
               prefix                = []
               suffix                = []
+              tags                  = {
+                defined             = {}
+                freeform            = {}
+              }
+            }
+          ]
+          drg                       = [
+            {
+              compartment           = "shared-network"
+              enable                = true
+              label                 = "core"
+              name                  = "core"
+              prefix                = []
+              suffix                = []
+              tags                  = {
+                defined             = {}
+                freeform            = {}
+              }
             }
           ]
           groups                    = [
@@ -128,13 +162,35 @@ variable "config" {
               }
             }
           ]
+          internet_gateway          = [
+            {
+              active                = false
+              compartment           = "shared-network"
+              enable                = true
+              label                 = "internet"
+              name                  = "internet"
+              prefix                = []
+              route_table           = {
+                label               = null
+              }
+              suffix                = []
+              tags                  = {
+                defined             = {}
+                freeform            = {}
+              }
+              vcn                   = {
+                compartment         = "shared-network"
+                label               = "tenancy"
+              }
+            }
+          ]
           local_peering_gateways    = [
             {
               compartment           = "shared-network"
-              enable                = false
+              enable                = true
               label                 = "tenancy"
               name                  = "tenancy"
-              peer                  = null
+              
               prefix                = []
               #route_table           = null
               tags                  = {
@@ -144,15 +200,21 @@ variable "config" {
               suffix                = []
               vcn                   = {
                 compartment         = "shared-network"
-                name                = "tenancy"
+                label               = "tenancy"
+                peer                = {
+                  compartment       = "uae-network"
+                  primary           = true                                                          #lpgs should only be initiated from one side.  
+                                                                                                    #each lpg should have one end as primary and 
+                                                                                                    #other not.
+                  label             = "uae"
+                }
               }
             },
             {
               compartment           = "uae-network"
-              enable                = false
+              enable                = true
               label                 = "uae"
               name                  = "uae"
-              peer                  = null
               prefix                = []
               #route_table           = null
               tags                  = {
@@ -162,12 +224,23 @@ variable "config" {
               suffix                = []
               vcn                   = {
                 compartment         = "uae-network"
-                name                = "uae-network"
+                label               = "uae"
+                peer                = {
+                  compartment       = "shared-network"
+                  primary           = false                                                         #lpgs should only be initiated from one side.  
+                                                                                                    #each lpg should have one end as primary and 
+                                                                                                    #other not.
+                  label             = "tenancy"
+                }
               }
             }
           ]
           modules                   = {
             compartments            = {
+              enable                = true
+              version               = null
+            }
+            drg                     = {
               enable                = true
               version               = null
             }
@@ -179,7 +252,31 @@ variable "config" {
               enable                = false
               version               = null
             }
+            internet_gateway        = {
+              enable                = true
+              version               = null
+            }
             local_peering_gateways  = {
+              enable                = true
+              version               = null
+            }
+            nat_gateway             = {
+              enable                = true
+              version               = null
+            }
+            network_security_group  = {
+              enable                = true
+              version               = null
+            }
+            route_table             = {
+              enable                = true
+              version               = null
+            }
+            service_gateway         = {
+              enable                = true
+              version               = null
+            }
+            subnets                 = {
               enable                = true
               version               = null
             }
@@ -196,6 +293,290 @@ variable "config" {
               version               = null
             }
           }
+          nat_gateway               = [
+            {
+              active                = false
+              compartment           = "shared-network"
+              enable                = false
+              label                 = "nat1"
+              name                  = "nat1"
+              prefix                = []
+              public_ip             = {
+                label               = null
+              }
+              suffix                = []
+              tags                  = {
+                defined             = {}
+                freeform            = {}
+              }
+              vcn                   = {
+                compartment         = "shared-network"
+                label               = "tenancy"
+              }
+            }
+          ]
+          network_security_group    = [
+            {
+              compartment           = "shared-network"
+              enable                = true
+              label                 = "test"
+              name                  = "test"
+              prefix                = []
+              rules                 = [
+                {
+                  description       = "Inbound SSH"
+                  destination       = {                                                             # select either cidr or network_security_group, default is cidr
+                    cidr            = {
+                      subnet        = "0.0.0.0"
+                      prefix        = "0"
+                    }
+                    network_security_group = {
+                      label         = null
+                    }
+                    port            = {
+                      max           = "22"
+                      min           = "22"
+                    }
+                    type            = "CIDR_BLOCK"                                                  # CIDR_BLOCK, SERVICE_CIDR_BLOCK, or NETWORK_SECURITY_GROUP
+                  }
+                  direction         = "INGRESS"
+                  enable            = true
+                  label             = "ssh"
+                  source            = {
+                    cidr            = {
+                      subnet        = "0.0.0.0"
+                      prefix        = "0"
+                    }
+                    network_security_group = {
+                      label         = null
+                    }
+                    port            = {
+                      max           = "22"
+                      min           = "22"
+                    }
+                    type            = "CIDR_BLOCK"                                                  # CIDR_BLOCK, SERVICE_CIDR_BLOCK, and NETWORK_SECURITY_GROUP(ocid)
+                  }
+                  stateless         = false                                                         # boolean, default false
+                  protocol          = {
+                    icmp            = {                                                             # only valid on icmp and icmpv6
+                      code          = null
+                      type          = null
+                    }
+                    type            = "tcp"                                                         # icmp, tcp, udp, icmpv6
+                  }
+                },
+                                {
+                  description       = "Inbound HTTP"
+                  destination       = {                                                             # select either cidr or network_security_group, default is cidr
+                    cidr            = {
+                      subnet        = "0.0.0.0"
+                      prefix        = "0"
+                    }
+                    network_security_group = {
+                      label         = null
+                    }
+                    port            = {
+                      max           = "80"
+                      min           = "80"
+                    }
+                    type            = "CIDR_BLOCK"                                                  # CIDR_BLOCK, SERVICE_CIDR_BLOCK, or NETWORK_SECURITY_GROUP
+                  }
+                  direction         = "INGRESS"
+                  enable            = true
+                  label             = "http"
+                  source            = {
+                    cidr            = {
+                      subnet        = "0.0.0.0"
+                      prefix        = "0"
+                    }
+                    network_security_group = {
+                      label         = null
+                    }
+                    port            = {
+                      max           = "80"
+                      min           = "80"
+                    }
+                    type            = "CIDR_BLOCK"                                                  # CIDR_BLOCK, SERVICE_CIDR_BLOCK, and NETWORK_SECURITY_GROUP(ocid)
+                  }
+                  stateless         = false                                                         # boolean, default false
+                  protocol          = {
+                    icmp            = {                                                             # only valid on icmp and icmpv6
+                      code          = null
+                      type          = null
+                    }
+                    type            = "tcp"                                                         # icmp, tcp, udp, icmpv6
+                  }
+                },
+                {
+                  description       = "Inbound tftp"
+                  destination       = {                                                             # select either cidr or network_security_group, default is cidr
+                    cidr            = {
+                      subnet        = "0.0.0.0"
+                      prefix        = "0"
+                    }
+                    network_security_group = {
+                      label         = null
+                    }
+                    port            = {
+                      max           = "69"
+                      min           = "69"
+                    }
+                    type            = "CIDR_BLOCK"                                                  # CIDR_BLOCK, SERVICE_CIDR_BLOCK, or NETWORK_SECURITY_GROUP
+                  }
+                  direction         = "INGRESS"
+                  enable            = true
+                  label             = "tftp"
+                  source            = {
+                    cidr            = {
+                      subnet        = "0.0.0.0"
+                      prefix        = "0"
+                    }
+                    network_security_group = {
+                      label         = null
+                    }
+                    port            = {
+                      max           = "69"
+                      min           = "69"
+                    }
+                    type            = "CIDR_BLOCK"                                                  # CIDR_BLOCK, SERVICE_CIDR_BLOCK, and NETWORK_SECURITY_GROUP(ocid)
+                  }
+                  stateless         = false                                                         # boolean, default false
+                  protocol          = {
+                    icmp            = {                                                             # only valid on icmp and icmpv6
+                      code          = null
+                      type          = null
+                    }
+                    type            = "udp"                                                         # icmp, tcp, udp, icmpv6
+                  }
+                }
+              ]
+              suffix                = []
+              tags                  = {
+                defined             = {}
+                freeform            = {}
+              }
+              vcn                   = {
+                compartment         = "shared-network"
+                label               = "tenancy"
+              }
+            }
+          ]
+          route_table               = [
+            {
+              compartment           = "shared-network"
+              enable                = true
+              label                 = "test"
+              name                  = "test"
+              prefix                = []
+              route_rules           = [
+                {
+                  description       = "test"
+                  destination       = {
+                    cidr            = {
+                      subnet        = "0.0.0.0"
+                      prefix        = "0"
+                    }
+                    type            = "CIDR_BLOCK"                                                  # CIDR_BLOCK or SERVICE_CIDR_BLOCK
+                  }
+                  enable            = true
+                  network_entity    = {
+                    label           = "internet"
+                    type            = "internet_gateway"                                            # internet_gateway, vcn, or service_gateway
+                  }
+                }
+              ]
+              suffix                = []
+              tags                  = {
+                defined             = {}
+                freeform            = {}
+              }
+              vcn                   = {
+                compartment         = "shared_network"
+                label               = "tenancy"
+              }
+            }
+          ]
+          service_gateway           = [
+            {
+              compartment           = "shared-network"
+              enable                = false
+              label                 = "sg1"
+              name                  = "sg1"
+              prefix                = []
+              service               = {
+                labels              = []
+              }
+              suffix                = []
+              tags                  = {
+                defined             = {}
+                freeform            = {}
+              }
+              vcn                   = {
+                compartment         = "shared-network"
+                label               = "tenancy"
+              }
+            }
+          ]
+          subnets                   = [
+            {
+              cidr                  = {
+                subnet              = "10.1.0.0"
+                prefix              = "30"
+              }
+              compartment           = "shared-network"
+              #dns_label             = null
+              enable                = true
+              #ipv6cidr_block        = null
+              #ipv6cidr_blocks       = null
+              label                 = "shared-jump"
+              name                  = "shared-jump"
+              #prohibit              = {
+              #  internet_ingress    = null
+              #  public_ip_on_vnic   = null
+              #}
+              #route_table           = null
+              #security_lists        = []
+              prefix                = []
+              tags                  = {
+                defined             = {}
+                freeform            = {}
+              }
+              suffix                = []
+              vcn                   = {
+                compartment         = "shared-network"
+                label               = "tenancy"
+              }
+            },
+            {
+              cidr                  = {
+                subnet              = "10.1.2.0"
+                prefix              = "29"
+              }
+              compartment           = "uae-network"
+              #dns_label             = null
+              enable                = true
+              #ipv6cidr_block        = null
+              #ipv6cidr_blocks       = null
+              label                 = "apex"
+              name                  = "apex"
+              #prohibit              = {
+              #  internet_ingress    = null
+              #  public_ip_on_vnic   = null
+              #}
+              #route_table           = null
+              #security_lists        = []
+              prefix                = []
+              tags                  = {
+                defined             = {}
+                freeform            = {}
+              }
+              suffix                = []
+              vcn                   = {
+                compartment         = "uae-network"
+                label               = "uae"
+              }
+            }
+          ]
           users                     = [
             {
               compartment           = "root"
@@ -252,6 +633,7 @@ variable "config" {
               defined_tags          = {}
               dns_label             = null
               enable                = true
+              #id                    = "ocid1.vcn.oc1.iad.amaaaaaaffki3maabrofnzz73fpza2rpun3ureqhqt6yzc2ybs7c73weujha"
               label                 = "tenancy"
               name                  = "tenancy"
               tags                  = {
@@ -273,11 +655,12 @@ variable "config" {
               }
               #cidr_block            = null                                                         #depricated
               cidr_blocks           = [
-                                        "10.1.0.0/23"
+                                        "10.1.2.0/23"
               ]
               defined_tags          = {}
               dns_label             = null
               enable                = true
+              #id                    = "ocid1.vcn.oc1.iad.amaaaaaaffki3maaftxgbakgletcefxktxkyaeaosmyw2rn4ph2wwdyyjd6a"
               label                 = "uae"
               name                  = "uae"
               tags                  = {
@@ -326,7 +709,7 @@ variable "config" {
                 enable              = false
               }
               map                   = {
-                enable              = false
+                enable              = true
               }
               raw                   = {
                 enable              = false
@@ -337,8 +720,47 @@ variable "config" {
             }
             prefix                  = []
             suffix                  = []
+            version                 = "0.1.1"
+          }
+          drg                       = {
+            enable                  = true
+            outputs                 = {
+              list                  = {
+                enable              = false
+              }
+              map                   = {
+                enable              = true
+              }
+              raw                   = {
+                enable              = false
+              }
+            }
+            prefix                  = []
+            suffix                  = [
+                                        "drg"
+            ]
+            version                 = "0.1.0"
           }
           groups                    = {}
+          internet_gateway          = {
+            enable                  = true
+            outputs                 = {
+              list                  = {
+                enable              = false
+              }
+              map                   = {
+                enable              = true
+              }
+              raw                   = {
+                enable              = false
+              }
+            }
+            prefix                  = []
+            suffix                  = [
+                                        "ig"
+            ]
+            version                 = "0.1.1"
+          }
           local_peering_gateways    = {
             enable                  = true
             outputs                 = {
@@ -349,9 +771,6 @@ variable "config" {
                 enable              = true
               }
               raw                   = {
-                enable              = true
-              }
-              test                  = {
                 enable              = false
               }
             }
@@ -366,6 +785,10 @@ variable "config" {
               enable                = true
               version               = "0.1.1"
             }
+            drg                     = {
+              enable                = true
+              version               = "0.1.0"
+            }
             groupmembership         = {
               enable                = true
               version               = "0.1.0"
@@ -374,7 +797,31 @@ variable "config" {
               enable                = true
               version               = "0.1.0"
             }
+            internet_gateway        = {
+              enable                = true
+              version               = "0.1.0"
+            }
             local_peering_gateways  = {
+              enable                = true
+              version               = "0.1.0"
+            }
+            nat_gateway             = {
+              enable                = true
+              version               = "0.1.0"
+            }
+            network_security_group  = {
+              enable                = true
+              version               = "0.1.0"
+            }
+            route_table             = {
+              enable                = true
+              version               = "0.1.0"
+            }
+            service_gateway         = {
+              enable                = true
+              version               = "0.1.0"
+            }
+            subnets                 = {
               enable                = true
               version               = "0.1.0"
             }
@@ -390,6 +837,105 @@ variable "config" {
               enable                = true
               version               = "0.1.0"
             }
+          }
+          nat_gateway               = {
+            outputs                 = {
+              list                  = {
+                enable              = false
+              }
+              map                   = {
+                enable              = true
+              }
+              raw                   = {
+                enable              = false
+              }
+              test                  = {
+                enable              = false
+              }
+            }
+            prefix                  = []
+            suffix                  = [
+                                        "ng"
+            ]
+          }
+          network_security_group    = {
+            additional              = []
+            outputs                 = {
+              list                  = {
+                enable              = false
+              }
+              map                   = {
+                enable              = true
+              }
+              raw                   = {
+                enable              = false
+              }
+              test                  = {
+                enable              = false
+              }
+            }
+            prefix                  = []
+            suffix                  = [
+                                        "nsg"
+            ]
+          }
+          route_table               = {
+            outputs                 = {
+              list                  = {
+                enable              = false
+              }
+              map                   = {
+                enable              = true
+              }
+              raw                   = {
+                enable              = false
+              }
+              test                  = {
+                enable              = false
+              }
+            }
+            prefix                  = []
+            suffix                  = [
+                                        "rt"
+            ]
+          }
+          service_gateway           = {
+            outputs                 = {
+              list                  = {
+                enable              = false
+              }
+              map                   = {
+                enable              = true
+              }
+              raw                   = {
+                enable              = false
+              }
+              test                  = {
+                enable              = false
+              }
+            }
+            prefix                  = []
+            suffix                  = [
+                                        "sg"
+            ]
+          }
+          services                  = {
+            outputs                 = {
+              list                  = {
+                enable              = false
+              }
+              map                   = {
+                enable              = false
+              }
+              raw                   = {
+                enable              = true
+              }
+              test                  = {
+                enable              = false
+              }
+            }
+            prefix                  = []
+            suffix                  = []
           }
           shapes                    = {
             outputs                 = {
@@ -408,6 +954,26 @@ variable "config" {
             }
             prefix                  = []
             suffix                  = []
+          }
+          subnets                   = {
+            outputs                 = {
+              list                  = {
+                enable              = false
+              }
+              map                   = {
+                enable              = true
+              }
+              raw                   = {
+                enable              = false
+              }
+              test                  = {
+                enable              = false
+              }
+            }
+            prefix                  = []
+            suffix                  = [
+                                        "sn"
+            ]
           }
           users                     = {}
           vcns                      = {

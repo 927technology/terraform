@@ -1,6 +1,5 @@
-oci/tenancy.tf
+oci/infrastructure/.terraform*
+oci/infrastructure/terraform.tfstate
+oci/infrastructure/terraform.tfstate.backup
 oci/v.tenancy.tf
-oci/.terraform*
-oci/terraform.tfstate
-oci/terraform.tfstate.backup
 .gitignore
